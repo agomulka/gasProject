@@ -30,9 +30,27 @@ public class GasService {
         return gasList;
     }
 
-    public int getCounter(){
+    public int getCounter() {
         return loadedData;
     }
 
+    public List<GasData> loading() {
+        loadedData = 0;
+        File file = new File("C:\\Users\\Ola\\Documents\\java\\gasManagement\\file1.txt");
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(" ");
+                list.add(new GasData(Integer.valueOf(parts[1]), parts[0]));
+                loadedData++;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
 
 }
