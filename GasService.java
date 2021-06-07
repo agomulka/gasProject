@@ -6,7 +6,6 @@ public class GasService {
     List<GasData> list;
     GasList gasList = new GasList();
     int loadedData;
-//    GasDAO gasDAO = new GasDAO();
 
 
     public GasService() {

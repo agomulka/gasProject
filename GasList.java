@@ -9,9 +9,9 @@ public class GasList {
         this.list = new ArrayList<>();
     }
 
-    public GasList addToList(GasData gasData) {
+    public List<GasData> addToList(GasData gasData) {
         list.add(gasData);
-        return (GasList) list;
+        return list;
     }
 
     public void printList() {
