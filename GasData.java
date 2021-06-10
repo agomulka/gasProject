@@ -7,14 +7,14 @@ public class GasData implements Comparable<GasData> {
     LocalDate date;
     int temperature;
     WeatherData weatherData;
+    private DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+    boolean radiatorOn;
 
     // gas value for today
     public GasData(int value) {
         this.value = value;
         this.date = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
         this.dateAsString = date.format(formatter);
-
         this.weatherData = new WeatherData("Katowice", dateAsString);
         this.temperature = downloadTemperature(dateAsString);
     }
@@ -23,8 +23,19 @@ public class GasData implements Comparable<GasData> {
     public GasData(int value, String dateAsString) {
         this.value = value;
         this.dateAsString = dateAsString;
+        int[] partsDate = partsDate(dateAsString);
+        this.date = LocalDate.of(partsDate[0], partsDate[1], partsDate[2]);
         this.weatherData = new WeatherData("Katowice", dateAsString);
         this.temperature = downloadTemperature(dateAsString);
+    }
+
+    private int[] partsDate(String date){
+        String[] split = date.split("-");
+        int[] parts = new int[3];
+        parts[0] = Integer.valueOf(split[0]);
+        parts[1] = Integer.valueOf(split[1]);
+        parts[2] = Integer.valueOf(split[2]);
+        return parts;
     }
 
     private int downloadTemperature(String dateAsString) {
@@ -42,13 +53,28 @@ public class GasData implements Comparable<GasData> {
         return "GasData " +
                 "value = " + value +
                 " from : " + dateAsString +
-                " temperature : "+ temperature;
+                " temperature : " + temperature;
     }
 
 
     @Override
     public int compareTo(GasData o) {
         return dateAsString.compareTo(o.dateAsString);
-        //return date.compareTo(o.date);
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public String getDateAsString() {
+        return dateAsString;
+    }
+
+    public int getTemperature() {
+        return temperature;
+    }
+
+    public String getYear(){
+        return String.valueOf(date.getYear());
     }
 }

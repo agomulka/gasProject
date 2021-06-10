@@ -1,11 +1,12 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class GasList {
+public class ListService {
     private List<GasData> list;
 
-    public GasList() {
+    public ListService() {
         this.list = new ArrayList<>();
     }
 
@@ -21,8 +22,16 @@ public class GasList {
         }
     }
 
-    public List<GasData> getList(){
+    public List<GasData> getList() {
         return list;
+    }
+
+    public List<GasData> getYearList(int year) {
+        String yearAsString = String.valueOf(year);
+        List<GasData> stream = list.stream().filter(gasData -> gasData.getYear().equals(yearAsString))
+                .collect(Collectors.toList());
+
+        return stream;
     }
 
 
