@@ -3,15 +3,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class GasList {
-    List<GasData> list;
+    private List<GasData> list;
 
     public GasList() {
         this.list = new ArrayList<>();
     }
 
-    public GasList addToList(GasData gasData) {
+    public List<GasData> addToList(GasData gasData) {
         list.add(gasData);
-        return (GasList) list;
+        return list;
     }
 
     public void printList() {
@@ -21,7 +21,9 @@ public class GasList {
         }
     }
 
-
-    public void addGas(GasData gasData) {
+    public List<GasData> getList(){
+        return list;
     }
+
+
 }
