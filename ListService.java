@@ -1,19 +1,21 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ListService {
     private List<GasData> list;
+    private Set<String> yearSet;
 
     public ListService() {
+        this.yearSet = new HashSet<>();
         this.list = new ArrayList<>();
     }
 
     public List<GasData> addToList(GasData gasData) {
+        yearSet.add(gasData.getYear());
         list.add(gasData);
         return list;
     }
+
 
     public void printList() {
         Collections.sort(list);
@@ -23,6 +25,7 @@ public class ListService {
     }
 
     public List<GasData> getList() {
+        Collections.sort(list);
         return list;
     }
 
@@ -34,5 +37,7 @@ public class ListService {
         return stream;
     }
 
-
+    public Set<String> getYearSet() {
+        return yearSet;
+    }
 }

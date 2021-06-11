@@ -2,9 +2,9 @@ import java.io.*;
 import java.util.List;
 
 public class FileLoader {
-    GasService gs;
-    int loadedData;
-    ListService gasList;
+    private GasService gs;
+    private int loadedData;
+    private ListService gasList;
 
     public FileLoader(GasService gs) {
         this.gs = gs;

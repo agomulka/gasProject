@@ -21,8 +21,8 @@ public class WeatherAPI {
 
     public WeatherAPI(WeatherData weather) {
         this.weather = weather;
-        LOCATION = weather.location;
-        DATE = weather.date;
+        LOCATION = weather.getLocation();
+        DATE = weather.getDate();
     }
 
     private String buildUrl(){

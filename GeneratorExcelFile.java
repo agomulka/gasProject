@@ -6,30 +6,50 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 public class GeneratorExcelFile {
     private XSSFWorkbook workbook;
-    XSSFSheet sheet, year20Sheet, year21Sheet;
-    ListService listService;
-    List<GasData> gasList;
-    GasService gs;
-    Object[][] result, year21List, year20List;
+    private List<XSSFSheet> yearSheet;
+    private XSSFSheet sheet;
+    private ListService listService;
+    private List<GasData> gasList;
+    private GasService gs;
+    private Object[][] result;
+    private Set<String> yearSet;
+    private List<Object[][]> yearList;
     private Object[][] titles = {{"date", "gas value", "temperature"}};
 
     public GeneratorExcelFile(GasService gs) {
         this.gs = gs;
         this.listService = gs.getListService();
         this.gasList = gs.getListService().getList();
+        this.yearSet = listService.getYearSet();
 
         this.workbook = new XSSFWorkbook();
         sheet = workbook.createSheet("All");
-        year20Sheet = workbook.createSheet("year2020");
-        year21Sheet = workbook.createSheet("year2021");
+        this.yearSheet = createYearSheets();
         this.result = createSheet(gasList);
-        this.year21List = createSheet(listService.getYearList(2021));
-        this.year20List = createSheet(listService.getYearList(2020));
+        this.yearList = createYearList();
+    }
+
+    private List<XSSFSheet> createYearSheets() {
+        List<XSSFSheet> yearSheets = new ArrayList<>();
+        for(String year : yearSet){
+            yearSheets.add(workbook.createSheet("year"+year));
+        }
+        return yearSheets;
+    }
+
+    private List<Object[][]> createYearList() {
+        List<Object[][]> yearList = new ArrayList<>();
+        for(String year : yearSet){
+            yearList.add(createSheet(listService.getYearList(Integer.parseInt(year))));
+        }
+        return yearList;
     }
 
 
@@ -54,10 +74,7 @@ public class GeneratorExcelFile {
         return fromList;
     }
 
-    private Object[][] getResult() {
-        return result;
-    }
-
+    // for debugging
     public void print() {
         for (int i = 0; i < result.length; i++) {
             for (int j = 0; j < result[0].length; j++) {
@@ -68,14 +85,16 @@ public class GeneratorExcelFile {
 
     public void generate() {
         generate(result, sheet);
-        generate(year20List, year20Sheet);
-        generate(year21List, year21Sheet);
+        for(int i = 0; i < yearList.size(); i++){
+            generate(yearList.get(i), yearSheet.get(i));
+        }
     }
 
     public void generate(Object[][] result, XSSFSheet sheet) {
         int rowCount = 0;
+        Row row;
         for (Object[] aDate : result) {
-            Row row = sheet.createRow(++rowCount);
+            row = sheet.createRow(++rowCount);
 
             int columnCount = 0;
 
@@ -89,17 +108,29 @@ public class GeneratorExcelFile {
             }
         }
 
-        Row sumRow = sheet.createRow(++rowCount);
-        sumRow.setHeightInPoints(35);
+        // average
+        row = sheet.createRow(++rowCount);
+        row.setHeightInPoints(35);
         Cell cell;
-        cell = sumRow.createCell(1);
+        cell = row.createCell(1);
         cell.setCellValue("Average:");
         int howManyData = result[0].length;
         int howManyRows = result.length;
         for (int j = 2; j < howManyData + 1; j++) {
-            cell = sumRow.createCell(j);
+            cell = row.createCell(j);
             String ref = (char) ('A' + j) + "3:" + (char) ('A' + j) + String.valueOf(1 + howManyRows);
             cell.setCellFormula("AVERAGE(" + ref + ")");
+        }
+
+        // difference between first and last
+        row = sheet.createRow(++rowCount);
+        row.setHeightInPoints(35);
+        cell = row.createCell(1);
+        cell.setCellValue("Used:");
+        for (int j = 2; j < howManyData; j++) {
+            cell = row.createCell(j);
+            String ref = (char) ('A' + j) + "3-" + (char) ('A' + j) + String.valueOf(1 + howManyRows);
+            cell.setCellFormula("ABS(" + ref + ")");
         }
 
         try (FileOutputStream outputStream = new FileOutputStream("gasData.xlsx")) {

@@ -1,7 +1,7 @@
 public class GasService {
     private ListService gasList;
-    int loadedData;
-    FileLoader fileLoader;
+    private int loadedData;
+    private FileLoader fileLoader;
 
     public GasService() {
         this.gasList = new ListService();

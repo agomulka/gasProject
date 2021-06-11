@@ -6,7 +6,7 @@ public class Main {
         ListService loading = gs.loading();
         int n = gs.getCounter();
         System.out.println("loaded " + n + " lines.");
-        loading.printList();
+//        loading.printList();
 
         System.out.println("generating excel file...");
         GeneratorExcelFile generator = new GeneratorExcelFile(gs);

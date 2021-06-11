@@ -2,13 +2,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class GasData implements Comparable<GasData> {
-    int value;
-    String dateAsString;
-    LocalDate date;
-    int temperature;
-    WeatherData weatherData;
+    private String dateAsString;
+    private LocalDate date;
+    private int temperature, value;
+    private WeatherData weatherData;
     private DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
-    boolean radiatorOn;
+    private int heatSeason;
 
     // gas value for today
     public GasData(int value) {
