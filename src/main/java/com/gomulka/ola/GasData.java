@@ -1,3 +1,5 @@
+package com.gomulka.ola;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 

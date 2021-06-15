@@ -1,3 +1,5 @@
+package com.gomulka.ola;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -15,7 +17,7 @@ public class FileLoader {
 
     public ListService loading() {
         loadedData = 0;
-        File file = new File("C:\\Users\\Ola\\Documents\\java\\gasManagement\\src\\main\\java\\file1.txt");
+        File file = new File("C:\\Users\\Ola\\Documents\\java\\gasManagement\\src\\main\\resources\\file1.txt");
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {

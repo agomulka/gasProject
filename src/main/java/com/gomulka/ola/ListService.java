@@ -1,3 +1,5 @@
+package com.gomulka.ola;
+
 import java.util.*;
 import java.util.stream.Collectors;
 

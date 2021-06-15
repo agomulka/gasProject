@@ -1,4 +1,4 @@
-import java.time.LocalDate;
+package com.gomulka.ola;
 
 public class WeatherData {
     private int temperature;

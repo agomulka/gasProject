@@ -1,3 +1,5 @@
+package com.gomulka.ola;
+
 public class GasService {
     private ListService gasList;
     private FileLoader fileLoader;

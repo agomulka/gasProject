@@ -1,3 +1,5 @@
+package com.gomulka.ola;
+
 public class Main {
 
     public static void main(String[] args) {
