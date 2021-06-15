@@ -1,4 +1,3 @@
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -34,19 +33,20 @@ public class GeneratorExcelFile {
         this.yearSheet = createYearSheets();
         this.result = createSheet(gasList);
         this.yearList = createYearList();
+
     }
 
     private List<XSSFSheet> createYearSheets() {
         List<XSSFSheet> yearSheets = new ArrayList<>();
-        for(String year : yearSet){
-            yearSheets.add(workbook.createSheet("year"+year));
+        for (String year : yearSet) {
+            yearSheets.add(workbook.createSheet("year" + year));
         }
         return yearSheets;
     }
 
     private List<Object[][]> createYearList() {
         List<Object[][]> yearList = new ArrayList<>();
-        for(String year : yearSet){
+        for (String year : yearSet) {
             yearList.add(createSheet(listService.getYearList(Integer.parseInt(year))));
         }
         return yearList;
@@ -85,12 +85,13 @@ public class GeneratorExcelFile {
 
     public void generate() {
         generate(result, sheet);
-        for(int i = 0; i < yearList.size(); i++){
+        for (int i = 0; i < yearList.size(); i++) {
             generate(yearList.get(i), yearSheet.get(i));
         }
     }
 
     public void generate(Object[][] result, XSSFSheet sheet) {
+
         int rowCount = 0;
         Row row;
         for (Object[] aDate : result) {
@@ -99,6 +100,7 @@ public class GeneratorExcelFile {
             int columnCount = 0;
 
             for (Object field : aDate) {
+                sheet.autoSizeColumn(columnCount);
                 Cell cell = row.createCell(++columnCount);
                 if (field instanceof String) {
                     cell.setCellValue((String) field);
@@ -108,22 +110,11 @@ public class GeneratorExcelFile {
             }
         }
 
-        // average
-        row = sheet.createRow(++rowCount);
-        row.setHeightInPoints(35);
-        Cell cell;
-        cell = row.createCell(1);
-        cell.setCellValue("Average:");
+        // difference between first and last
         int howManyData = result[0].length;
         int howManyRows = result.length;
-        for (int j = 2; j < howManyData + 1; j++) {
-            cell = row.createCell(j);
-            String ref = (char) ('A' + j) + "3:" + (char) ('A' + j) + String.valueOf(1 + howManyRows);
-            cell.setCellFormula("AVERAGE(" + ref + ")");
-        }
-
-        // difference between first and last
         row = sheet.createRow(++rowCount);
+        Cell cell;
         row.setHeightInPoints(35);
         cell = row.createCell(1);
         cell.setCellValue("Used:");
