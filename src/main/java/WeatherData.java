@@ -1,9 +1,9 @@
 import java.time.LocalDate;
 
 public class WeatherData {
-    int temperature;
-    String location;
-    String date;
+    private int temperature;
+    private String location;
+    private String date;
 
     public WeatherData(int temperature) {
         this.temperature = temperature;
@@ -18,5 +18,11 @@ public class WeatherData {
         return temperature;
     }
 
+    public String getLocation() {
+        return location;
+    }
 
+    public String getDate() {
+        return date;
+    }
 }

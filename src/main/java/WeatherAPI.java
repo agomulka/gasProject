@@ -21,8 +21,8 @@ public class WeatherAPI {
 
     public WeatherAPI(WeatherData weather) {
         this.weather = weather;
-        LOCATION = weather.location;
-        DATE = weather.date;
+        LOCATION = weather.getLocation();
+        DATE = weather.getDate();
     }
 
     private String buildUrl(){
@@ -73,7 +73,6 @@ public class WeatherAPI {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         WeatherAPI weather = new WeatherAPI(new WeatherData("Katowice", "2021-05-14"));
-       // weather.getTodayWeather();
         System.out.println(weather.buildUrl());
         WeatherAPI w2 = new WeatherAPI(new WeatherData("Katowice", "2020-05-14"));
         System.out.println(w2.buildUrl());
