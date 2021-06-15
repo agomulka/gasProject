@@ -126,7 +126,7 @@ public class GeneratorExcelFile {
             cell.setCellFormula("ABS(" + ref + ")");
         }
 
-        try (FileOutputStream outputStream = new FileOutputStream("gasData.xlsx")) {
+        try (FileOutputStream outputStream = new FileOutputStream("src/main/resources/gasData.xlsx")) {
             workbook.write(outputStream);
         } catch (IOException e) {
             e.printStackTrace();

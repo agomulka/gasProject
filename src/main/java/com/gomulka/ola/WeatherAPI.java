@@ -16,7 +16,8 @@ import java.util.Map;
 
 
 public class WeatherAPI {
-    private final String KEY = "d679749c7e07455dac8133338210705";
+    private final String KEY = "ed07d906dd514668b09143422211506";
+//            "d679749c7e07455dac8133338210705";
     private String LOCATION;
     private String DATE;
     private WeatherData weather;
@@ -37,11 +38,11 @@ public class WeatherAPI {
         return url;
     }
 
+    public String getUrl() {
+        return buildUrl();
+    }
 
     private Integer getWeather() throws IOException, InterruptedException {
-
-        //String url = "http://api.openweathermap.org/data/2.5/weather?q="+LOCATION+"&appid="+KEY + "&units=metric";
-        //  String url = "http://api.openweathermap.org/data/2.5/weather?q="+LOCATION+"&appid="+KEY+"&units=metric" ;//+ "&units=metric";
         String url = buildUrl();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -59,7 +60,6 @@ public class WeatherAPI {
                     for (String k3 : result.get(key).get(k2).get(i).keySet()) {
                         if (k3.equals("avgtempC")) {
                             return Integer.valueOf(String.valueOf(result.get(key).get(k2).get(i).get(k3)));
-                            //   System.out.println(key + " : " + k2 + " : " + k3 + " :" + result.get(key).get(k2).get(i).get(k3));
                         }
                     }
                 }
