@@ -1,5 +1,7 @@
-package com.gomulka.ola;
+package com.gomulka.ola.dao;
 
+import com.gomulka.ola.model.GasData;
+import com.gomulka.ola.services.GasService;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -12,26 +14,25 @@ import java.util.List;
 import java.util.Set;
 
 
-public class GeneratorExcelFile {
-    private XSSFWorkbook workbook;
-    private List<XSSFSheet> yearSheet;
-    private XSSFSheet sheet;
-    private ListService listService;
-    private List<GasData> gasList;
-    private GasService gs;
-    private Object[][] result;
-    private Set<String> yearSet;
-    private List<Object[][]> yearList;
-    private Object[][] titles = {{"date", "gas value", "temperature"}};
+public class GeneratorExcelDao {
+    private final XSSFWorkbook workbook;
+    private final List<XSSFSheet> yearSheet;
+    private final XSSFSheet sheet;
+    private final List<GasData> gasList;
+    private final GasService gasService;
+    private final Object[][] result;
+    private final Set<String> yearSet;
+    private final List<Object[][]> yearList;
+    private final Object[][] titles = {{"date", "gas value", "temperature"}};
+    private final String destinationPath;
 
-    public GeneratorExcelFile(GasService gs) {
-        this.gs = gs;
-        this.listService = gs.getListService();
-        this.gasList = gs.getListService().getList();
-        this.yearSet = listService.getYearSet();
-
+    public GeneratorExcelDao(GasService gasService, String destinationPath) {
+        this.gasService = gasService;
+        this.gasList = this.gasService.getList();
+        this.yearSet = this.gasService.getYearSet();
+        this.destinationPath = destinationPath;
         this.workbook = new XSSFWorkbook();
-        sheet = workbook.createSheet("All");
+        this.sheet = workbook.createSheet("All");
         this.yearSheet = createYearSheets();
         this.result = createSheet(gasList);
         this.yearList = createYearList();
@@ -49,7 +50,7 @@ public class GeneratorExcelFile {
     private List<Object[][]> createYearList() {
         List<Object[][]> yearList = new ArrayList<>();
         for (String year : yearSet) {
-            yearList.add(createSheet(listService.getYearList(Integer.parseInt(year))));
+            yearList.add(createSheet(gasService.getYearList(Integer.parseInt(year))));
         }
         return yearList;
     }
@@ -126,7 +127,7 @@ public class GeneratorExcelFile {
             cell.setCellFormula("ABS(" + ref + ")");
         }
 
-        try (FileOutputStream outputStream = new FileOutputStream("src/main/resources/gasData.xlsx")) {
+        try (FileOutputStream outputStream = new FileOutputStream(destinationPath)) {
             workbook.write(outputStream);
         } catch (IOException e) {
             e.printStackTrace();

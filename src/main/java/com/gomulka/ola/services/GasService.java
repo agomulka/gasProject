@@ -1,39 +1,39 @@
-package com.gomulka.ola;
+package com.gomulka.ola.services;
+
+import com.gomulka.ola.model.GasData;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ListService {
-    private List<GasData> list;
+public class GasService {
+    private List<GasData> gasList;
     private Set<String> yearSet;
 
-    public ListService() {
+    public GasService() {
+        this.gasList = new ArrayList<>();
         this.yearSet = new HashSet<>();
-        this.list = new ArrayList<>();
+    }
+
+    public List<GasData> getList() {
+        return gasList;
     }
 
     public List<GasData> addToList(GasData gasData) {
         yearSet.add(gasData.getYear());
-        list.add(gasData);
-        return list;
+        gasList.add(gasData);
+        return gasList;
     }
 
-
     public void printList() {
-        Collections.sort(list);
-        for (GasData gasData : list) {
+        Collections.sort(gasList);
+        for (GasData gasData : gasList) {
             System.out.println(gasData);
         }
     }
 
-    public List<GasData> getList() {
-        Collections.sort(list);
-        return list;
-    }
-
     public List<GasData> getYearList(int year) {
         String yearAsString = String.valueOf(year);
-        List<GasData> stream = list.stream().filter(gasData -> gasData.getYear().equals(yearAsString))
+        List<GasData> stream = gasList.stream().filter(gasData -> gasData.getYear().equals(yearAsString))
                 .collect(Collectors.toList());
 
         return stream;
@@ -42,4 +42,5 @@ public class ListService {
     public Set<String> getYearSet() {
         return yearSet;
     }
+
 }

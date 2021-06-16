@@ -1,24 +1,16 @@
-package com.gomulka.ola;
+package com.gomulka.ola.model;
+
+import com.gomulka.ola.dao.WeatherDao;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class GasData implements Comparable<GasData> {
-    private String dateAsString;
-    private LocalDate date;
-    private int temperature, value;
-    private WeatherData weatherData;
-    private DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+    private final String dateAsString;
+    private final LocalDate date;
+    private final int temperature, value;
+    private final WeatherData weatherData;
     private int heatSeason;
 
-    // gas value for today
-    public GasData(int value) {
-        this.value = value;
-        this.date = LocalDate.now();
-        this.dateAsString = date.format(formatter);
-        this.weatherData = new WeatherData("Katowice", dateAsString);
-        this.temperature = downloadTemperature(dateAsString);
-    }
 
     // gas value for specific date
     public GasData(int value, String dateAsString) {
@@ -30,7 +22,7 @@ public class GasData implements Comparable<GasData> {
         this.temperature = downloadTemperature(dateAsString);
     }
 
-    private int[] partsDate(String date){
+    private int[] partsDate(String date) {
         String[] split = date.split("-");
         int[] parts = new int[3];
         parts[0] = Integer.valueOf(split[0]);
@@ -40,7 +32,7 @@ public class GasData implements Comparable<GasData> {
     }
 
     private int downloadTemperature(String dateAsString) {
-        WeatherAPI weatherAPI = new WeatherAPI(weatherData);
+        WeatherDao weatherAPI = new WeatherDao(weatherData);
         try {
             return weatherAPI.getTemperature();
         } catch (Exception e) {
@@ -75,7 +67,7 @@ public class GasData implements Comparable<GasData> {
         return temperature;
     }
 
-    public String getYear(){
+    public String getYear() {
         return String.valueOf(date.getYear());
     }
 }
