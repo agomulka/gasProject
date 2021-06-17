@@ -1,27 +1,28 @@
 package com.gomulka.ola;
 
 import com.gomulka.ola.dao.FileLoaderDao;
-import com.gomulka.ola.dao.GeneratorExcelDao;
 import com.gomulka.ola.services.GasService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Main {
+    final static String filePath = "C:\\Users\\Ola\\Documents\\java\\gasManagement\\src\\main\\resources\\file1.txt";
+    final static Logger logger = LoggerFactory.getLogger(Main.class);
+    final static String destinationPath = "src/main/resources/gasData.xlsx";
 
     public static void main(String[] args) {
-        final String filePath = "C:\\Users\\Ola\\Documents\\java\\gasManagement\\src\\main\\resources\\file1.txt";
-        final String destinationPath = "src/main/resources/gasData.xlsx";
-
-        System.out.println("loading data from file...");
+        logger.info("loading data from file...");
         GasService gasService = new GasService();
-        FileLoaderDao fileLoader = new FileLoaderDao(gasService, filePath);
-        fileLoader.load();
-        int n = fileLoader.getNumberLoadedData();
-        System.out.println("loaded " + n + " lines.");
+        gasService.loadFromFile(filePath);
+        int n = gasService.getNumberOfLoadedData();
+        logger.info("loaded " + n + " lines.");
 
 
-        System.out.println("generating excel file...");
-        GeneratorExcelDao generator = new GeneratorExcelDao(gasService, destinationPath);
+        logger.info("generating excel file...");
+        ExcelGenerator generator = new ExcelGenerator(gasService, destinationPath);
         generator.generate();
-        System.out.println("generated successfully.");
+        logger.info("generated successfully.");
     }
 
 }

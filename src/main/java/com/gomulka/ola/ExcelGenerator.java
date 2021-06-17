@@ -1,4 +1,4 @@
-package com.gomulka.ola.dao;
+package com.gomulka.ola;
 
 import com.gomulka.ola.model.GasData;
 import com.gomulka.ola.services.GasService;
@@ -6,6 +6,8 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 
-public class GeneratorExcelDao {
+public class ExcelGenerator {
     private final XSSFWorkbook workbook;
     private final List<XSSFSheet> yearSheet;
     private final XSSFSheet sheet;
@@ -25,8 +27,9 @@ public class GeneratorExcelDao {
     private final List<Object[][]> yearList;
     private final Object[][] titles = {{"date", "gas value", "temperature"}};
     private final String destinationPath;
+    private final static Logger logger = LoggerFactory.getLogger(ExcelGenerator.class);
 
-    public GeneratorExcelDao(GasService gasService, String destinationPath) {
+    public ExcelGenerator(GasService gasService, String destinationPath) {
         this.gasService = gasService;
         this.gasList = this.gasService.getList();
         this.yearSet = this.gasService.getYearSet();
@@ -81,7 +84,7 @@ public class GeneratorExcelDao {
     public void print() {
         for (int i = 0; i < result.length; i++) {
             for (int j = 0; j < result[0].length; j++) {
-                System.out.println(result[i][j]);
+                logger.info(String.valueOf(result[i][j]));
             }
         }
     }
@@ -93,8 +96,7 @@ public class GeneratorExcelDao {
         }
     }
 
-    public void generate(Object[][] result, XSSFSheet sheet) {
-
+    private void generate(Object[][] result, XSSFSheet sheet) {
         int rowCount = 0;
         Row row;
         for (Object[] aDate : result) {

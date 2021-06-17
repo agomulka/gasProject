@@ -10,7 +10,7 @@ public class GasData implements Comparable<GasData> {
     private final int temperature, value;
     private final WeatherData weatherData;
     private int heatSeason;
-
+    private WeatherDao weatherDao;
 
     // gas value for specific date
     public GasData(int value, String dateAsString) {
@@ -20,6 +20,7 @@ public class GasData implements Comparable<GasData> {
         this.date = LocalDate.of(partsDate[0], partsDate[1], partsDate[2]);
         this.weatherData = new WeatherData("Katowice", dateAsString);
         this.temperature = downloadTemperature(dateAsString);
+        weatherDao = new WeatherDao(weatherData);
     }
 
     private int[] partsDate(String date) {
@@ -32,9 +33,8 @@ public class GasData implements Comparable<GasData> {
     }
 
     private int downloadTemperature(String dateAsString) {
-        WeatherDao weatherAPI = new WeatherDao(weatherData);
         try {
-            return weatherAPI.getTemperature();
+            return weatherDao.getTemperature();
         } catch (Exception e) {
             e.printStackTrace();
         }
