@@ -19,8 +19,8 @@ public class GasData implements Comparable<GasData> {
         int[] partsDate = partsDate(dateAsString);
         this.date = LocalDate.of(partsDate[0], partsDate[1], partsDate[2]);
         this.weatherData = new WeatherData("Katowice", dateAsString);
-        this.temperature = downloadTemperature(dateAsString);
         weatherDao = new WeatherDao(weatherData);
+        this.temperature = downloadTemperature(dateAsString);
     }
 
     private int[] partsDate(String date) {
