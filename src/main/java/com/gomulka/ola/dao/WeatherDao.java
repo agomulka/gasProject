@@ -1,6 +1,7 @@
-package com.gomulka.ola;
+package com.gomulka.ola.dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gomulka.ola.model.WeatherData;
 
 import java.io.IOException;
 import java.net.URI;
@@ -15,22 +16,22 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 
-public class WeatherAPI {
+public class WeatherDao {
     private final String KEY = "ed07d906dd514668b09143422211506";
-//            "d679749c7e07455dac8133338210705";
-    private String LOCATION;
-    private String DATE;
-    private WeatherData weather;
+    //            "d679749c7e07455dac8133338210705";
+    private final String LOCATION;
+    private final String DATE;
+    private final WeatherData weather;
 
-    public WeatherAPI(WeatherData weather) {
+    public WeatherDao(WeatherData weather) {
         this.weather = weather;
         LOCATION = weather.getLocation();
         DATE = weather.getDate();
     }
 
-    private String buildUrl(){
+    private String buildUrl() {
         String url = "";
-        if(DATE.equals(String.valueOf(LocalDate.now()))) {
+        if (DATE.equals(String.valueOf(LocalDate.now()))) {
             url = "http://api.worldweatheronline.com/premium/v1/weather.ashx?key=" + KEY + "&q=" + LOCATION + "&num_of_days=1&date=" + DATE + "&tp=24&format=json";
         } else {
             url = "http://api.worldweatheronline.com/premium/v1/past-weather.ashx?key=" + KEY + "&q=" + LOCATION + "&date=" + DATE + "&tp=24&format=json";
@@ -38,11 +39,8 @@ public class WeatherAPI {
         return url;
     }
 
-    public String getUrl() {
-        return buildUrl();
-    }
 
-    private Integer getWeather() throws IOException, InterruptedException {
+    private Integer getAvgTemperature() throws IOException, InterruptedException {
         String url = buildUrl();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -69,14 +67,12 @@ public class WeatherAPI {
     }
 
     public Integer getTemperature() throws IOException, InterruptedException {
-        return getWeather();
+        return getAvgTemperature();
+    }
+
+    public String getUrl() {
+        return buildUrl();
     }
 
 
-    public static void main(String[] args) throws IOException, InterruptedException {
-        WeatherAPI weather = new WeatherAPI(new WeatherData("Katowice", "2021-05-14"));
-        System.out.println(weather.buildUrl());
-        WeatherAPI w2 = new WeatherAPI(new WeatherData("Katowice", "2020-05-14"));
-        System.out.println(w2.buildUrl());
-    }
 }

@@ -1,34 +1,38 @@
-package com.gomulka.ola;
+package com.gomulka.ola.dao;
+
+import com.gomulka.ola.model.GasData;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class FileLoader {
-    private GasService gs;
+public class FileLoaderDao {
     private int loadedData;
-    private ListService gasList;
+    private List<GasData> gasList;
+    private final String filePath;
 
-    public FileLoader(GasService gs) {
-        this.gs = gs;
-        this.gasList = gs.getListService();
+
+    public FileLoaderDao(String filePath) {
+        this.filePath = filePath;
+        this.gasList = new ArrayList<>();
     }
 
-    public ListService loading() {
+    public List<GasData> load() {
         loadedData = 0;
-        File file = new File("C:\\Users\\Ola\\Documents\\java\\gasManagement\\src\\main\\resources\\file1.txt");
+        File file = new File(filePath);
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(" ");
-                gasList.addToList(new GasData(Integer.valueOf(parts[1]), parts[0]));
+                gasList.add(new GasData(Integer.valueOf(parts[1]), parts[0]));
                 loadedData++;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return gasList;
     }
 

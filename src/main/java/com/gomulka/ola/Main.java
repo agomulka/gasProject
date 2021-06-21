@@ -1,20 +1,26 @@
 package com.gomulka.ola;
 
+import com.gomulka.ola.services.GasService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Main {
+    private final static String filePath = "C:\\Users\\Ola\\Documents\\java\\gasManagement\\src\\main\\resources\\file1.txt";
+    private final static Logger logger = LoggerFactory.getLogger(Main.class);
+    private final static String destinationPath = "src/main/resources/gasData.xlsx";
 
     public static void main(String[] args) {
-        System.out.println("loading data from file...");
-        GasService gs = new GasService();
-        ListService loading = gs.loading();
-        int n = gs.getCounter();
-        System.out.println("loaded " + n + " lines.");
-//        loading.printList();
+        logger.info("loading data from file...");
+        GasService gasService = new GasService();
+        gasService.loadFromFile(filePath);
+        int n = gasService.getNumberOfLoadedData();
+        logger.info("loaded " + n + " lines.");
 
-        System.out.println("generating excel file...");
-        GeneratorExcelFile generator = new GeneratorExcelFile(gs);
-//        generator.print();
+
+        logger.info("generating excel file...");
+        ExcelGenerator generator = new ExcelGenerator(gasService, destinationPath);
         generator.generate();
-        System.out.println("generated successfully.");
+        logger.info("generated successfully.");
     }
 
 }

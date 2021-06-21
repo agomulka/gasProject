@@ -1,21 +1,13 @@
-package com.gomulka.ola;
+package com.gomulka.ola.model;
 
 public class WeatherData {
-    private int temperature;
-    private String location;
-    private String date;
+    private final String location;
+    private final String date;
 
-    public WeatherData(int temperature) {
-        this.temperature = temperature;
-    }
 
     public WeatherData(String location, String date) {
         this.location = location;
         this.date = date;
-    }
-
-    public int getTemperature() {
-        return temperature;
     }
 
     public String getLocation() {
