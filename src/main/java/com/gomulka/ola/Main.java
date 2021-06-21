@@ -1,15 +1,13 @@
 package com.gomulka.ola;
 
-import com.gomulka.ola.dao.FileLoaderDao;
 import com.gomulka.ola.services.GasService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Main {
-    final static String filePath = "C:\\Users\\Ola\\Documents\\java\\gasManagement\\src\\main\\resources\\file1.txt";
-    final static Logger logger = LoggerFactory.getLogger(Main.class);
-    final static String destinationPath = "src/main/resources/gasData.xlsx";
+    private final static String filePath = "C:\\Users\\Ola\\Documents\\java\\gasManagement\\src\\main\\resources\\file1.txt";
+    private final static Logger logger = LoggerFactory.getLogger(Main.class);
+    private final static String destinationPath = "src/main/resources/gasData.xlsx";
 
     public static void main(String[] args) {
         logger.info("loading data from file...");

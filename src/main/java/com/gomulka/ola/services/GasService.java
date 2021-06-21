@@ -49,16 +49,16 @@ public class GasService {
     }
 
 
-    public List<GasData> loadFromFile(String path){
+    public List<GasData> loadFromFile(String path) {
         fileLoader = new FileLoaderDao(path);
         List<GasData> loadedList = fileLoader.load();
-        for(GasData gasData : loadedList){
+        for (GasData gasData : loadedList) {
             addToList(gasData);
         }
         return this.gasList;
     }
 
-    public int getNumberOfLoadedData(){
+    public int getNumberOfLoadedData() {
         return fileLoader.getNumberLoadedData();
     }
 }
